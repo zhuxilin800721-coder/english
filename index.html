@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>四年级上册英语听力</title>
+    <style>
+        /* ==================== 
+           1. 夜空背景 (为了衬托烟花)
+           ==================== */
+        body { 
+            font-family: -apple-system, 'Comic Sans MS', 'Microsoft YaHei', sans-serif;
+            /* 深邃夜空渐变 */
+            background: linear-gradient(to bottom, #1e3c72 0%, #2a5298 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            margin: 0; padding: 0; 
+            padding-bottom: 90px; /* 底部留空给进度条 */
+            color: #333;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        .container { max-width: 650px; margin: 0 auto; padding: 20px; position: relative; z-index: 10; }
+        
+        /* 标题 - 正式且醒目 */
+        h1 { 
+            text-align: center; color: #fff; font-size: 1.8em; margin-bottom: 30px;
+            text-shadow: 0 0 10px #00f2fe, 0 0 20px #4facfe;
+            letter-spacing: 2px; font-weight: 900; margin-top: 15px;
+        }
+
+        /* ==================== 
+           2. 主页：疯狂动物城风格按钮
+           ==================== */
+        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 35px 20px; padding: 10px; }
+
+        .menu-btn { 
+            aspect-ratio: 1; border: none; border-radius: 28px; 
+            position: relative; cursor: pointer; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);
+            color: #999; border: 4px solid rgba(255,255,255,0.6); transition: transform 0.2s;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            z-index: 1; overflow: visible; 
+        }
+        
+        .menu-btn.active { color: white; border: none; }
+        .menu-btn:active { transform: scale(0.95); }
+
+        /* === 角色装饰 === */
+        .menu-btn::before {
+            content: attr(data-pet-left);
+            position: absolute; left: -15px; bottom: -5px; font-size: 3.2em;
+            z-index: 2; transform: rotate(-10deg);
+            filter: drop-shadow(2px 4px 5px rgba(0,0,0,0.3));
+        }
+        .menu-btn::after {
+            content: attr(data-pet-right);
+            position: absolute; right: -15px; bottom: -5px; font-size: 3.2em;
+            z-index: 2; transform: rotate(10deg);
+            filter: drop-shadow(-2px 4px 5px rgba(0,0,0,0.3));
+        }
+
+        /* 单元专属色 */
+        .u3 { background: linear-gradient(135deg, #00b09b, #96c93d); }
+        .u4 { background: linear-gradient(135deg, #f12711, #f5af19); }
+        .u5 { background: linear-gradient(135deg, #834d9b, #d04ed6); }
+        .u6 { background: linear-gradient(135deg, #2980b9, #6dd5fa); }
+
+        .menu-btn h2 { margin: 0; font-size: 2.2em; font-weight: 800; text-shadow: 1px 1px 3px rgba(0,0,0,0.2); z-index: 3; }
+        .menu-btn span { font-size: 1em; font-weight: 700; margin-top: 5px; z-index: 3; text-transform: uppercase; }
+
+        /* ==================== 
+           3. 详情页 
+           ==================== */
+        .header { 
+            position: sticky; top: 15px; z-index: 100; 
+            background: rgba(255, 255, 255, 0.95); padding: 10px 20px; 
+            border-radius: 30px; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2); margin-bottom: 25px;
+        }
+        .back-btn { 
+            background: #ff4757; color: white; border: none; padding: 6px 18px; 
+            border-radius: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(255, 71, 87, 0.4); font-size: 0.9em;
+        }
+
+        .section { 
+            background: rgba(255, 255, 255, 0.95); border-radius: 25px; padding: 20px; margin-bottom: 20px; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1); border: 2px solid #fff;
+        }
+        .section h3 { margin: 0 0 15px 0; color: #2f3542; border-left: 6px solid #1e90ff; padding-left: 12px; font-weight: 800; }
+        
+        audio { width: 100%; height: 40px; margin-bottom: 15px; border-radius: 10px; outline: none; }
+
+        .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-func { 
+            flex: 1; padding: 10px; border: none; border-radius: 15px; color: white; 
+            font-weight: bold; box-shadow: 0 4px 0 rgba(0,0,0,0.1); transition: all 0.1s; cursor: pointer; text-align: center; font-size: 0.9em;
+        }
+        .btn-trans { background: #3742fa; }
+        .btn-quiz { background: #2ed573; }
+        .btn-role { background: #ffa502; }
+        .btn-func:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,0.1); }
+
+        .hidden-box { display: none; background: #dfe4ea; padding: 15px; border-radius: 15px; margin-top: 15px; color: #333; }
+        .en-line { font-weight: 700; font-size: 1.05em; color: #000; }
+        .cn-line { font-size: 0.9em; color: #57606f; margin-bottom: 10px; display:block; }
+        .quiz-input { border: 2px solid #ced6e0; border-radius: 8px; padding: 5px; width: 80px; text-align: center; }
+        .correct { color: #2ed573; font-weight: bold; } .wrong { color: #ff4757; font-weight: bold; }
+
+        /* ==================== 
+           4. 底部能量条 (精致版)
+           ==================== */
+        .progress-bar-container {
+            position: fixed; bottom: 15px; left: 30px; right: 30px; 
+            background: rgba(255,255,255,0.95); border-radius: 40px; 
+            padding: 8px 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 200; border: 2px solid #fff; cursor: pointer;
+            transition: transform 0.2s;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .progress-bar-container:active { transform: scale(0.98); }
+        .progress-text { font-size: 0.85em; color: #2f3542; font-weight: 800; white-space: nowrap; margin-right: 10px; }
+        .progress-track { flex-grow: 1; height: 8px; background: #dcdde1; border-radius: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #ff4757, #ffa502, #2ed573, #3742fa); background-size: 200% 100%; animation: rainbow 3s linear infinite; transition: width 1s linear; }
+        @keyframes rainbow { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
+
+        /* 烟花画布 */
+        #fireworks-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+    </style>
+</head>
+<body>
+
+    <canvas id="fireworks-canvas"></canvas>
+
+    <div id="home-page" class="container">
+        <h1>四年级上册英语听力</h1>
+        
+        <div class="menu-grid">
+            <button class="menu-btn" onclick="loadUnit(1)"><h2>1</h2><span>Unit 1</span></button>
+            <button class="menu-btn" onclick="loadUnit(2)"><h2>2</h2><span>Unit 2</span></button>
+            
+            <button class="menu-btn active u3" onclick="loadUnit(3)" data-pet-left="🐰" data-pet-right="🦊">
+                <h2>3</h2><span>My Week</span>
+            </button>
+            
+            <button class="menu-btn active u4" onclick="loadUnit(4)" data-pet-left="🦥" data-pet-right="🐆">
+                <h2>4</h2><span>Sports</span>
+            </button>
+            
+            <button class="menu-btn active u5" onclick="loadUnit(5)" data-pet-left="🦁" data-pet-right="🐑">
+                <h2>5</h2><span>Dolls</span>
+            </button>
+            
+            <button class="menu-btn active u6" onclick="loadUnit(6)" data-pet-left="🐃" data-pet-right="🦦">
+                <h2>6</h2><span>Weather</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="unit-page" class="container" style="display: none;">
+        <div class="header">
+            <h2 id="page-title" style="margin:0; font-size: 1.1em; color:#333;">Unit Title</h2>
+            <button class="back-btn" onclick="goBack()">🏠 返回</button>
+        </div>
+        <div id="content-area"></div>
+    </div>
+
+    <div class="progress-bar-container" onclick="testFireworks()">
+        <div class="progress-text">⚡ 学习计时: <span id="time-text">0</span>/20 min</div>
+        <div class="progress-track">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // ⏰ 计时逻辑 (20分钟)
+        // ==========================================
+        let totalSeconds = 0;
+        const TARGET_MINUTES = 20; 
+        const TARGET_SECONDS = TARGET_MINUTES * 60;
+        
+        setInterval(() => {
+            totalSeconds++;
+            updateProgressBar();
+            if (totalSeconds === TARGET_SECONDS) {
+                startGrandFireworks();
+                alert("🎆 能量充满！\n\n你太棒了！\n请欣赏长达 10 秒的烟花大秀！");
+            }
+        }, 1000);
+
+        function updateProgressBar() {
+            const pct = Math.min((totalSeconds / TARGET_SECONDS) * 100, 100);
+            document.getElementById('progress-fill').style.width = pct + "%";
+            document.getElementById('time-text').innerText = Math.floor(totalSeconds / 60);
+        }
+
+        function testFireworks() {
+            if(confirm("预览今日份的 10 秒烟花特效？🎆")) {
+                startGrandFireworks();
+            }
+        }
+
+        // ==========================
+        // 🎆 7种每日烟花特效引擎 (无声版)
+        // ==========================
+        const canvas = document.getElementById("fireworks-canvas");
+        const ctx = canvas.getContext("2d");
+        let particles = [];
+        let rockets = [];
+        let isRunning = false;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function getDailyStyleIndex() { return new Date().getDate() % 7; }
+
+        function startGrandFireworks() {
+            if (isRunning) return;
+            isRunning = true;
+            const startTime = Date.now();
+            const duration = 10000; 
+            
+            requestAnimationFrame(animate);
+
+            const interval = setInterval(() => {
+                if (Date.now() - startTime > duration) {
+                    clearInterval(interval);
+                    setTimeout(() => { isRunning = false; particles = []; rockets = []; ctx.clearRect(0,0,canvas.width,canvas.height); }, 4000);
+                } else {
+                    createRocket(getDailyStyleIndex());
+                }
+            }, 300);
+        }
+
+        function createRocket(styleIdx) {
+            const x = Math.random() * canvas.width;
+            const targetY = Math.random() * (canvas.height * 0.4) + 50; 
+            
+            let baseColor = `hsl(${Math.random()*360}, 100%, 70%)`;
+            if (styleIdx === 1) baseColor = '#ffd700'; 
+            if (styleIdx === 2) baseColor = '#00f2fe'; 
+            if (styleIdx === 4) baseColor = '#ff4757'; 
+
+            rockets.push({
+                x: x, y: canvas.height, targetY: targetY,
+                vx: (Math.random() - 0.5) * 4, vy: -(Math.random() * 4 + 10),
+                styleIdx: styleIdx, color: baseColor
+            });
+        }
+
+        function explode(rocket) {
+            const count = 150; 
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 6 + 1;
+                
+                let pColor = rocket.color;
+                let pGravity = 0.05;
+                let pDecay = 0.015;
+                let pFriction = 0.95;
+
+                switch(rocket.styleIdx) {
+                    case 0: pColor = `hsl(${Math.random()*360}, 100%, 60%)`; break;
+                    case 1: pColor = 'gold'; pGravity = 0.15; pFriction = 0.92; pDecay = 0.008; break;
+                    case 2: pColor = Math.random()>0.5 ? '#00f2fe' : 'white'; break;
+                    case 3: pColor = Math.random()>0.5 ? '#ff00cc' : '#3333ff'; break;
+                    case 4: pColor = `hsl(${Math.random()*30 + 340}, 100%, 60%)`; break;
+                    case 5: pGravity = 0.02; pDecay = 0.01; break;
+                    case 6: pColor = `hsl(${Math.random()*50 + 100}, 100%, 60%)`; break;
+                }
+
+                particles.push({
+                    x: rocket.x, y: rocket.y,
+                    vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+                    color: pColor, alpha: 1, 
+                    size: Math.random() * 3 + 1,
+                    gravity: pGravity, decay: pDecay, friction: pFriction
+                });
+            }
+        }
+
+        function animate() {
+            if (!isRunning && particles.length === 0 && rockets.length === 0) return;
+            
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.15)'; 
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.globalCompositeOperation = 'lighter';
+
+            for (let i = rockets.length - 1; i >= 0; i--) {
+                const r = rockets[i];
+                r.x += r.vx; r.y += r.vy; r.vy += 0.1;
+                ctx.beginPath(); ctx.arc(r.x, r.y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = r.color; ctx.fill();
+                if (r.vy >= 0 || r.y <= r.targetY) { explode(r); rockets.splice(i, 1); }
+            }
+
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.vx *= p.friction; p.vy *= p.friction; p.vy += p.gravity;
+                p.x += p.vx; p.y += p.vy; p.alpha -= p.decay;
+                if (p.alpha <= 0) { particles.splice(i, 1); } 
+                else {
+                    ctx.globalAlpha = p.alpha; ctx.fillStyle = p.color;
+                    ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        // ==========================================
+        // 💾 数据中心 (Unit 3-6 内容完整版)
+        // ==========================================
+        const appData = {
+            1: { title: "Unit 1", items: [] }, 
+            2: { title: "Unit 2", items: [] },
+            3: {
+                title: "Unit 3: My week 📅",
+                items: [
+                    { title: "🎶 1. Lead-in", file: "4AU3 Lead-in.mp3", en: "Monday, Tuesday, Wednesday, Thursday and then Friday.\nSaturday's next and then Sunday.\nI enjoy every single day.\n\n(Repeat 2 times)", cn: "周一，周二，周三，周四，然后是周五。\n接下来是周六，然后是周日。\n我享受每一天。" },
+                    { title: "🔤 2. Words", file: "4AU3 Words.mp3", en: "week, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday.\nwhen, every.\nat, up, early, today.\nWhat day is it today?\ncinema, after school.\ndancing, lesson, walk, dog.\ntomorrow, free, See you tomorrow.", cn: "星期/周，周一，周二，周三，周四，周五，周六，周日。\n什么时候，每一。\n在，向上，早，今天。\n今天是星期几？\n电影院，放学后。\n跳舞，课，遛/走，狗。\n明天，空闲，明天见。" },
+                    { title: "📖 3. Story Time", file: "4AU3 Story time.mp3", en: "Miss Li: It's Friday today. Let's go to the cinema after school.\nMike: It's a good idea, but I have a dancing lesson today. I have two dancing lessons every week.\nMiss Li: When do you have dancing lessons?\nMike: On Wednesday and Friday.\nMiss Li: What about you, Mike?\nFriend: Sorry, I walk my dog on Tuesday and Friday.\nMiss Li: What about tomorrow?\nFriend: OK. I'm free on Saturday.\nOthers: Me too.\nMiss Li: Great. See you tomorrow.", cn: "李老师：今天是周五。我们放学后去电影院吧。\nMike：好主意，但我今天有舞蹈课。我每周有两节舞蹈课。\n李老师：你什么时候有舞蹈课？\nMike：周三和周五。\n李老师：你呢，Mike（注：此处疑为问另一位同学）？\n朋友：抱歉，我周二和周五要遛狗。\n李老师：那明天呢？\n朋友：好的，我周六有空。\n其他人：我也是。\n李老师：太棒了，明天见。", quizPool: [{q:"It is ______ today.", a:"Friday"}, {q:"Mike has a ______ lesson.", a:"dancing"}, {q:"Friend walks his ______.", a:"dog"}, {q:"They are free on ______.", a:"Saturday"}] },
+                    { title: "🐭 4. Cartoon Time", file: "4AU3 Cartoon time.mp3", en: "Bobby: Oh, it's Saturday. I can't be late for school again.\nBobby: Get up! Get up! It's six thirty.\nDad: Good morning, Mr Wilson. When do you get up every day?\nBobby: Good morning, Bobby. I get up at five.\nBobby: You're up early today.\nDad: Yes, I want to go to school early.\nBobby: School? What day is it today?\nDad: Oh, it's Saturday.", cn: "Bobby: 噢，（以为）要上学了。我不能再迟到了。\nBobby: 起床！起床！六点半了。\n爸爸: 早上好，Wilson先生。你每天几点起床？\nBobby: 早上好，Bobby。我五点起床。\nBobby: 你今天起得真早。\n爸爸: 是的，我想早点去学校。\nBobby: 学校？今天是星期几？\n爸爸: 噢，今天是星期六（注：此处Bobby搞错了，以为要上学，结果发现是周六不用上学）。", roleplay: true },
+                    { title: "👂 5. Sounds 1", file: "4AU3 Sounds in focus 1.mp3", en: "I want to go to school early.", cn: "我想早点去学校。" },
+                    { title: "👂 6. Sounds 2", file: "4AU3 Sounds in focus 2.mp3", en: "What do you want to do on Wednesday?\nWe want to walk and watch a wonderful play.", cn: "周三你想做什么？\n我们想去散步并看一场精彩的剧。" },
+                    { title: "📋 7. Wrap-up", file: "4AU3 Wrap-up time.mp3", en: "1. What do you do every week, Liu Tao?\n   I read books and draw pictures every week.\n2. When do you read books?\n   I read books on Monday and Wednesday.\n3. When do you draw pictures?\n   On Tuesday and Friday.\n4. What about Thursday?\n   I run on Thursday.\n5. What do you do on Saturday and Sunday?\n   On Saturday, I clean my room. On Sunday, I go to see my grandpa and grandma.\n   You have a wonderful week.", cn: "1. 刘涛，你每周做什么？\n   我每周读书和画画。\n2. 你什么时候读书？\n   我周一和周三读书。\n3. 你什么时候画画？\n   周二和周五。\n4. 周四呢？\n   我周四跑步。\n5. 你周六和周日做什么？\n   周六我打扫房间。周日我去看望爷爷奶奶。\n   你这一周过得很精彩。" }
+                ]
+            },
+            4: {
+                title: "Unit 4: Sports 🏀",
+                items: [
+                    { title: "🎶 1. Lead-in", file: "4AU4 Lead-in.mp3", en: "I like running. I like jumping.\nSport is cool. Sport is fun.\nI like football. I like swimming.\nLet's keep fit. Run, run, run.\n\n(Repeat 2 times)", cn: "我喜欢跑步。我喜欢跳跃。\n运动很酷。运动很有趣。\n我喜欢足球。我喜欢游泳。\n让我们保持健康。跑啊，跑啊，跑。" },
+                    { title: "🔤 2. Words", file: "4AU4 Words.mp3", en: "play, football, ping-pong, basketball, great, swimming, so, well.\nHave a go.\nhard.\nIt's OK.\ntry, well played.", cn: "玩/打(球)，足球，乒乓球，篮球，很棒，游泳，如此，好。\n试一试。\n困难的。\n没关系。\n尝试，打得好。" },
+                    { title: "📖 3. Story Time", file: "4AU4 Story time.mp3", en: "Mike: I like sport. It's good for us.\nLiu Tao: Me too. I like swimming and playing ping-pong. What about you?\nMike: I like playing ping-pong too. Let's go and play.\nLiu Tao: Good idea.\nOthers: Cool. You play so well.\nMike: Thanks.\nMike: Hi Mike. Do you like playing ping-pong?\nBoy: Yes, I do. Ping-pong is fun. But I can't play well.\nMike: Have a go.\nBoy: OK. Oh no, it's hard for me.\nMike: It's OK. Try again.\nBoy: (Plays well) Well played.\nMike: Good. Thank you. Ping-pong is great fun.", cn: "麦克：我喜欢运动。它对我们有益。\n刘涛：我也是。我喜欢游泳和打乒乓球。你呢？\n麦克：我也喜欢打乒乓球。我们去打吧。\n刘涛：好主意。\n其他人：酷。你打得真好。\n麦克：谢谢。\n麦克：嗨麦克。你喜欢打乒乓球吗？\n男孩：是的，我喜欢。乒乓球很有趣。但我打不好。\n麦克：试一试。\n男孩：好的。噢不，这对我来说很难。\n麦克：没关系。再试一次。\n男孩：（打得不错）打得好。\n麦克：好。谢谢你。乒乓球真好玩。", quizPool: [{q:"Mike likes ______.", a:"ping-pong"}, {q:"Liu Tao likes ______.", a:"swimming"}, {q:"Mike says: Have a ______.", a:"go"}] },
+                    { title: "🐭 4. Cartoon Time", file: "4AU4 Cartoon time.mp3", en: "Sam: Come and play with us.\nBobby: I like playing basketball. Do you like playing basketball?\nSam: Yes, I do.\nFriend: Me too.\nSam: Let's play.\nBobby: Do you like playing basketball?\nDuck: Yes, I do.\nSam: Come and play with us.\nDuck: OK. Thank you.\nDuck: Wow! This is great fun. Can we play again tomorrow?\nSam: Sure.", cn: "Sam: 过来和我们一起玩吧。\nBobby: 我喜欢打篮球。你喜欢打篮球吗？\nSam: 是的，我喜欢。\n朋友: 我也是。\nSam: 我们开始玩吧。\nBobby: 你喜欢打篮球吗？\n鸭子: 是的，我喜欢。\nSam: 过来和我们一起玩吧。\n鸭子: 好的。谢谢。\n鸭子: 哇！这真好玩。我们明天能再玩吗？\nSam: 当然可以。", roleplay: true },
+                    { title: "👂 5. Sounds 1", file: "4AU4 Sounds in focus 1.mp3", en: "Football is fun.\nGreat! Good idea!", cn: "足球很有趣。\n太棒了！好主意！" },
+                    { title: "👂 6. Sounds 2", file: "4AU4 Sounds in focus 2.mp3", en: "Happy girl, on the mat.\nHit the ball, with the bat.\nHappy boy, on the mat.\nCatch the ball, throw it back.", cn: "快乐的女孩，在垫子上。\n用球拍击球。\n快乐的男孩，在垫子上。\n接住球，扔回去。" },
+                    { title: "📋 7. Wrap-up", file: "4AU4 Wrap-up time.mp3", en: "1. What sport do you like, Yang Ling?\n   I like playing basketball.\n2. Do you like running, Mr Green?\n   No, I don't. I like playing ping-pong.\n3. I like swimming and playing football. What about you?", cn: "1. 杨玲，你喜欢什么运动？\n   我喜欢打篮球。\n2. 格林先生，你喜欢跑步吗？\n   不，我不喜欢。我喜欢打乒乓球。\n3. 我喜欢游泳和踢足球。你呢？" }
+                ]
+            },
+            5: {
+                title: "Unit 5: Dolls 🧸",
+                items: [
+                    { title: "🎶 1. Lead-in", file: "4AU5 Lead-in.mp3", en: "(Narrator: What toys do the boy and the girl like?)\n\nGirl: I have many toys at home. Dolls, robots, toy cars and more.\nSome are big and some are small. Some look like people, and some look like animals.\nBoy: That's right. I love to play with toys. I can play with my friends.\nGirl: Do you have a favorite toy?\nBoy: Yes, my favorite toy is a brown monkey. Its arms and legs are short.\nIt's very cute. It's from my grandma. I love it very much.\nGirl: Nice. I like my puzzle best. My friends and I can play with it together and learn. It's fun too.", cn: "(旁白：男孩和女孩喜欢什么玩具？)\n\n女孩：我家里有很多玩具。洋娃娃、机器人、玩具车等等。\n有的大，有的小。有的看起来像人，有的看起来像动物。\n男孩：没错。我喜欢玩玩具。我可以和朋友们一起玩。\n女孩：你有最喜欢的玩具吗？\n男孩：有，我最喜欢的玩具是一只棕色的猴子。它的胳膊和腿很短。\n它非常可爱。是我奶奶送给我的。我非常喜欢它。\n女孩：真不错。我最喜欢我的拼图。我和朋友们可以一起玩，还能一起学习。这也很有趣。" },
+                    { title: "🔤 2. Words", file: "4AU5 Words.mp3", en: "different, same.\nhair, eye, ear, nose, mouth.\narm, leg.\nrobot, doll.\nhis, her.\ntall, short, big, small, long.\nbring, lots of, have, show.", cn: "不同的，相同的。\n头发，眼睛，耳朵，鼻子，嘴巴。\n胳膊，腿。\n机器人，洋娃娃。\n他的，她的。\n高的，矮的/短的，大的，小的，长的。\n带来，许多，有，展示。" },
+                    { title: "📖 3. Story Time", file: "4A U5 Story time  改.mp3", en: "Child A: Mum, do you like our dolls?\nMum: Yes, they're cute.\nChild A: My doll is a girl. Look at her lovely face. Her eyes are big. Her nose and mouth are small. Her hair is long.\nChild B: My doll is a boy. His eyes are small. His nose is small too. But his mouth is big. His arms and legs are long.\nMum: Your dolls are great. They bring you lots of fun.\nChild A & B: We can have fun together with our friends.\nChild A: Let's have a show.\nMum: Good idea.", cn: "孩子A：妈妈，你喜欢我们的洋娃娃吗？\n妈妈：喜欢，它们很可爱。\n孩子A：我的娃娃是个女孩。看她可爱的脸。她的眼睛很大。她的鼻子和嘴巴很小。她的头发很长。\n孩子B：我的娃娃是个男孩。他的眼睛很小。他的鼻子也很小。但是他的嘴巴很大。他的胳膊和腿很长。\n妈妈：你们的娃娃真棒。它们带给你们很多乐趣。\n孩子AB：我们可以和朋友们一起玩得很开心。\n孩子A：我们来表演一个节目吧（开个展示会吧）。\n妈妈：好主意。", quizPool: [{q:"The girl doll's hair is ______.", a:"long"}, {q:"The boy doll's mouth is ______.", a:"big"}, {q:"The boy doll's legs are ______.", a:"long"}] },
+                    { title: "🐭 4. Cartoon Time", file: "4AU5 Cartoon time.mp3", en: "Sam: These robots are cool. Look at this robot. His face is cute.\nRobot: Hello, what's your name?\nBobby: I'm Bobby. Wow, you can talk. Can you dance?\nRobot: Yes, I can. Look!\nSam: I can dance too.\nRobot: Wow, you're so tall. Your legs are long.\nSam: Now my legs are short. \n(Sam falls down)\nBobby/Robot: It's great fun!", cn: "Sam: 这些机器人真酷。看这个机器人。他的脸很可爱。\n机器人: 你好，你叫什么名字？\nBobby: 我是Bobby。哇，你会说话。你会跳舞吗？\n机器人: 是的，我会。看！\nSam: 我也会跳舞。\n机器人: 哇，你真高。你的腿真长。\nSam: 现在我的腿变短了。 \n(Sam摔倒了)\nBobby/机器人: 真好玩！", roleplay: true },
+                    { title: "👂 5. Sounds 1", file: "4AU5 Sounds in focus 1.mp3", en: "His face is cute.\nWhat's your name?", cn: "他的脸很可爱。\n你叫什么名字？" },
+                    { title: "👂 6. Sounds 2", file: "4AU5 Sounds in focus 2.mp3", en: "My name is Grace.\nI have a lovely face.\nMy eyes are big and bright.\nLike stars, late at night.", cn: "我的名字叫 Grace。\n我有一张可爱的脸。\n我的眼睛又大又亮。\n像深夜里的星星一样。" },
+                    { title: "📋 7. Wrap-up", file: "4AU5 Wrap-up time.mp3", en: "1. This is my new doll. She's a girl. Her hair is long. Her eyes are big. Her nose, ears and mouth are small. She's tall.\n2. I want this robot. Its eyes are blue. Its ears are big. And its mouth is big too. Its arms are short, but its legs are long.", cn: "1. 这是我的新洋娃娃。她是个女孩。她的头发很长。眼睛很大。鼻子、耳朵和嘴巴很小。她个子很高。\n2. 我想要这个机器人。它的眼睛是蓝色的。它的耳朵很大。它的嘴巴也很大。它的胳膊很短，但腿很长。" }
+                ]
+            },
+            6: {
+                title: "Unit 6: Weather 🌦️",
+                items: [
+                    { title: "🎶 1. Lead-in", file: "4AU6 Lead-in.mp3", en: "Rain, rain, go away,\nCome again another day.\nLittle Johnny wants to play.\nRain, rain, go away.\n\n(Repeat 2 times)", cn: "雨啊，雨啊，快走开，\n改天再来吧。\n小约翰想要出去玩。\n雨啊，雨啊，快走开。" },
+                    { title: "🔤 2. Words", file: "4AU6 Words.mp3", en: "weather, cloudy, sunny, cool, rainy, hot, windy, warm.\n\nSave for a rainy day.\nMoney.\nWhat's the weather like today?\nPark, Meet, Fly a kite.\nIt's raining.\nWorry, Umbrella, There.", cn: "天气，多云的，晴朗的，凉爽的，下雨的，热的，有风的，温暖的。\n\n未雨绸缪（存钱备用）。\n钱。\n今天天气怎么样？\n公园，见面，放风筝。\n正在下雨。\n担心，雨伞，那里。" },
+                    { title: "📖 3. Story Time", file: "4AU6 Story time.mp3", en: "Su Hai: Hi! Let's go to the park today.\nYang Ling: Good idea. What's the weather like?\nSu Hai: It's sunny and warm.\nYang Ling: OK. Let's meet at ten.\n...\n(In the park)\nYang Ling: It's nice here. I like playing outside.\nSu Hai: It's windy and cloudy now. We can fly a kite.\n...\n(Later)\nYang Ling: It's nice and cool now. Let's have lunch.\nSu Hai: Oh no, it's raining!\nYang Ling: Don't worry. I have an umbrella with me.\nSu Hai: I also have an umbrella. We can share it. Let's go and draw pictures there.", cn: "苏海：嗨！我们今天去公园吧。\n杨玲：好主意。天气怎么样？\n苏海：天气晴朗又温暖。\n杨玲：好的。我们在10点见面。\n...\n(在公园)\n杨玲：这儿真好。我喜欢在外面玩。\n苏海：现在有风又多云。我们可以放风筝。\n...\n(后来)\n杨玲：现在很凉爽。我们吃午饭吧。\n苏海：噢不，下雨了！\n杨玲：别担心。我带了一把伞。\n苏海：我也有一把伞。我们可以共用。我们去那边画画吧。", quizPool: [{q:"Su Hai wants to go to the ______.", a:"park"}, {q:"They meet at ______ o'clock.", a:"ten"}, {q:"It is ______ now!", a:"raining"}] },
+                    { title: "🐭 4. Cartoon Time", file: "4AU6 Cartoon time.mp3", en: "Bobby: A rainy day.\nBobby: I want a red toy car.\nSam: Bobby, save your money for a rainy day.\nBobby: A rainy day?\n(Bobby looks out...)\nSam: What's the weather like today?\nBobby: Oh, it's sunny and hot.\n...\n(Later)\nSam: What's the weather like today?\nBobby: Oh, it's cloudy.\n...\n(It rains)\nBobby: It's raining! It's raining! Today is a rainy day. It's time to buy the toy car.\nSam: Bobby...", cn: "Bobby: 一个下雨天。\nBobby: 我想要一辆红色玩具车。\nSam: Bobby，要把钱存着以备不时之需(rainy day)。\nBobby: 下雨天？\n(Bobby 往外看...)\nSam: 今天天气怎么样？\nBobby: 噢，晴朗又炎热。\n...\n(后来)\nSam: 今天天气怎么样？\nBobby: 噢，多云了。\n...\n(下雨了)\nBobby: 下雨了！下雨了！今天是'rainy day'。是时候买玩具车了。\nSam: Bobby... (无奈)", roleplay: true },
+                    { title: "👂 5. Sounds 1", file: "4AU6 Sounds in focus 1.mp3", en: "I want a red toy car.", cn: "我想要一辆红色的玩具车。" },
+                    { title: "👂 6. Sounds 2", file: "4AU6 Sounds in focus 2.mp3", en: "E, e, Wednesday.\nE, e, Wednesday.", cn: "E, e, Wednesday (周三)。" },
+                    { title: "📋 7. Wrap-up", file: "4AU6 Wrap-up time.mp3", en: "Good evening. Here is the weather report for next week.\nOn Monday, it is sunny all day.\nOn Tuesday, it is sunny in the morning and cloudy in the afternoon.\nOn Wednesday and Thursday, it is rainy. Take your umbrella with you.\nOn Friday and Saturday, it is windy and cloudy.\nOn Sunday, it is cloudy in the morning. Then it is rainy in the afternoon.\nHave a nice week.", cn: "晚上好。这是下周的天气预报。\n周一，整天晴朗。\n周二，上午晴朗，下午多云。\n周三和周四，有雨。请随身带伞。\n周五和周六，有风且多云。\n周日，上午多云。下午转雨。\n祝大家这周愉快。" }
+                ]
+            }
+        };
+
+        function loadUnit(unitId) {
+            const data = appData[unitId];
+            if (!data || data.items.length === 0) {
+                alert("🔒 哎呀：\nUnit " + unitId + " 还没有解锁哦！\n请先学习 Unit 3-6 吧~");
+                return;
+            }
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('unit-page').style.display = 'block';
+            document.getElementById('page-title').innerText = data.title;
+            renderContent(data.items, unitId); 
+            window.scrollTo(0, 0);
+        }
+
+        function goBack() {
+            document.getElementById('unit-page').style.display = 'none';
+            document.getElementById('home-page').style.display = 'block';
+            document.querySelectorAll('audio').forEach(a => a.pause());
+        }
+
+        function renderContent(items, unitId) {
+            const container = document.getElementById('content-area');
+            container.innerHTML = "";
+            items.forEach((item, idx) => {
+                const sectionId = `section-${idx}`;
+                let html = `<div class="section"><h3>${item.title}</h3><audio controls src="${item.file}" preload="metadata"></audio><div class="btn-group"><button class="btn-func btn-trans" onclick="toggle('${sectionId}-trans')">📝 原文翻译</button>`;
+                // 修复：确保按钮正确显示
+                if (item.quizPool && item.quizPool.length > 0) html += `<button class="btn-func btn-quiz" onclick="renderQuiz('${sectionId}-quiz', ${unitId}, ${idx})">❓ 听力挑战</button>`;
+                if (item.roleplay) html += `<button class="btn-func btn-role" onclick="toggle('${sectionId}-role')">🗣️ 口语跟读</button>`;
+                html += `</div><div id="${sectionId}-trans" class="hidden-box text-content">${formatText(item.en, 'en')}<hr style="border:0; border-top:1px dashed #ddd; margin:10px 0;">${formatText(item.cn, 'cn')}</div>`;
+                
+                if (item.quizPool && item.quizPool.length > 0) {
+                    html += `<div id="${sectionId}-quiz" class="hidden-box"><p style="color:#00b894; font-weight:bold; margin-top:0;">🎯 随机抽取 1 题：</p><div id="${sectionId}-quiz-content"></div><button class="btn-func btn-quiz" onclick="checkQuiz('${sectionId}-quiz')" style="margin-top:10px;">✅ 提交答案</button></div>`;
+                }
+                
+                if (item.roleplay) html += `<div id="${sectionId}-role" class="hidden-box" style="background:#dfe4ea;"><p><strong>请模仿角色:</strong></p><p class="en-line">"Hello!"</p></div>`;
+                html += `</div>`;
+                container.innerHTML += html;
+            });
+        }
+
+        function formatText(text, type) { return text.split('\n').map(l => l.trim() ? `<p class="${type}-line">${l}</p>` : "<br>").join(''); }
+        function toggle(id) { const el = document.getElementById(id); el.style.display = (el.style.display==='block')?'none':'block'; }
+        
+        function renderQuiz(cid, uid, idx) {
+             const div = document.getElementById(cid + '-content');
+             const pool = appData[uid].items[idx].quizPool;
+             // 随机抽取
+             const q = pool[Math.floor(Math.random() * pool.length)];
+             div.innerHTML = `<p>${q.q}</p><input type="text" class="quiz-input" data-ans="${q.a}">`;
+             document.getElementById(cid).style.display = 'block';
+        }
+        
+        function checkQuiz(cid) {
+            const input = document.getElementById(cid).querySelector('input');
+            if(input.value.trim().toLowerCase() === input.getAttribute('data-ans').toLowerCase()) alert("✅ 正确 (Great!)");
+            else alert("❌ 应该是: " + input.getAttribute('data-ans'));
+        }
+    </script>
+</body>
+</html>

@@ -6,16 +6,15 @@
     <title>四年级上册英语听力</title>
     <style>
         /* ==================== 
-           1. 夜空背景 (为了衬托烟花)
+           1. 夜空背景 
            ==================== */
         body { 
             font-family: -apple-system, 'Comic Sans MS', 'Microsoft YaHei', sans-serif;
-            /* 深邃夜空渐变 */
             background: linear-gradient(to bottom, #1e3c72 0%, #2a5298 100%);
             background-attachment: fixed;
             min-height: 100vh;
             margin: 0; padding: 0; 
-            padding-bottom: 90px; /* 底部留空给进度条 */
+            padding-bottom: 90px;
             color: #333;
             -webkit-tap-highlight-color: transparent;
             overflow-x: hidden;
@@ -23,7 +22,7 @@
 
         .container { max-width: 650px; margin: 0 auto; padding: 20px; position: relative; z-index: 10; }
         
-        /* 标题 - 正式且醒目 */
+        /* 标题 */
         h1 { 
             text-align: center; color: #fff; font-size: 1.8em; margin-bottom: 30px;
             text-shadow: 0 0 10px #00f2fe, 0 0 20px #4facfe;
@@ -31,7 +30,7 @@
         }
 
         /* ==================== 
-           2. 主页：疯狂动物城风格按钮
+           2. 主页按钮
            ==================== */
         .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 35px 20px; padding: 10px; }
 
@@ -63,10 +62,11 @@
         }
 
         /* 单元专属色 */
-        .u3 { background: linear-gradient(135deg, #00b09b, #96c93d); }
-        .u4 { background: linear-gradient(135deg, #f12711, #f5af19); }
-        .u5 { background: linear-gradient(135deg, #834d9b, #d04ed6); }
-        .u6 { background: linear-gradient(135deg, #2980b9, #6dd5fa); }
+        .u3 { background: linear-gradient(135deg, #00b09b, #96c93d); } /* 绿 */
+        .u4 { background: linear-gradient(135deg, #f12711, #f5af19); } /* 橙 */
+        .u5 { background: linear-gradient(135deg, #834d9b, #d04ed6); } /* 紫 */
+        .u6 { background: linear-gradient(135deg, #2980b9, #6dd5fa); } /* 蓝 */
+        .u7 { background: linear-gradient(135deg, #ff9a9e, #fecfef); } /* 粉(夏奇羊) */
 
         .menu-btn h2 { margin: 0; font-size: 2.2em; font-weight: 800; text-shadow: 1px 1px 3px rgba(0,0,0,0.2); z-index: 3; }
         .menu-btn span { font-size: 1em; font-weight: 700; margin-top: 5px; z-index: 3; text-transform: uppercase; }
@@ -110,7 +110,7 @@
         .correct { color: #2ed573; font-weight: bold; } .wrong { color: #ff4757; font-weight: bold; }
 
         /* ==================== 
-           4. 底部能量条 (精致版)
+           4. 底部能量条
            ==================== */
         .progress-bar-container {
             position: fixed; bottom: 15px; left: 30px; right: 30px; 
@@ -126,7 +126,6 @@
         .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #ff4757, #ffa502, #2ed573, #3742fa); background-size: 200% 100%; animation: rainbow 3s linear infinite; transition: width 1s linear; }
         @keyframes rainbow { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
 
-        /* 烟花画布 */
         #fireworks-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
     </style>
 </head>
@@ -156,6 +155,10 @@
             <button class="menu-btn active u6" onclick="loadUnit(6)" data-pet-left="🐃" data-pet-right="🦦">
                 <h2>6</h2><span>Weather</span>
             </button>
+
+            <button class="menu-btn active u7" onclick="loadUnit(7)" data-pet-left="🦌" data-pet-right="🐆">
+                <h2>7</h2><span>Seasons</span>
+            </button>
         </div>
     </div>
 
@@ -176,7 +179,7 @@
 
     <script>
         // ==========================================
-        // ⏰ 计时逻辑 (20分钟)
+        // ⏰ 计时与烟花逻辑
         // ==========================================
         let totalSeconds = 0;
         const TARGET_MINUTES = 20; 
@@ -226,9 +229,7 @@
             isRunning = true;
             const startTime = Date.now();
             const duration = 10000; 
-            
             requestAnimationFrame(animate);
-
             const interval = setInterval(() => {
                 if (Date.now() - startTime > duration) {
                     clearInterval(interval);
@@ -242,17 +243,11 @@
         function createRocket(styleIdx) {
             const x = Math.random() * canvas.width;
             const targetY = Math.random() * (canvas.height * 0.4) + 50; 
-            
             let baseColor = `hsl(${Math.random()*360}, 100%, 70%)`;
             if (styleIdx === 1) baseColor = '#ffd700'; 
             if (styleIdx === 2) baseColor = '#00f2fe'; 
             if (styleIdx === 4) baseColor = '#ff4757'; 
-
-            rockets.push({
-                x: x, y: canvas.height, targetY: targetY,
-                vx: (Math.random() - 0.5) * 4, vy: -(Math.random() * 4 + 10),
-                styleIdx: styleIdx, color: baseColor
-            });
+            rockets.push({ x: x, y: canvas.height, targetY: targetY, vx: (Math.random() - 0.5) * 4, vy: -(Math.random() * 4 + 10), styleIdx: styleIdx, color: baseColor });
         }
 
         function explode(rocket) {
@@ -260,12 +255,10 @@
             for (let i = 0; i < count; i++) {
                 const angle = Math.random() * Math.PI * 2;
                 const speed = Math.random() * 6 + 1;
-                
                 let pColor = rocket.color;
                 let pGravity = 0.05;
                 let pDecay = 0.015;
                 let pFriction = 0.95;
-
                 switch(rocket.styleIdx) {
                     case 0: pColor = `hsl(${Math.random()*360}, 100%, 60%)`; break;
                     case 1: pColor = 'gold'; pGravity = 0.15; pFriction = 0.92; pDecay = 0.008; break;
@@ -275,48 +268,29 @@
                     case 5: pGravity = 0.02; pDecay = 0.01; break;
                     case 6: pColor = `hsl(${Math.random()*50 + 100}, 100%, 60%)`; break;
                 }
-
-                particles.push({
-                    x: rocket.x, y: rocket.y,
-                    vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
-                    color: pColor, alpha: 1, 
-                    size: Math.random() * 3 + 1,
-                    gravity: pGravity, decay: pDecay, friction: pFriction
-                });
+                particles.push({ x: rocket.x, y: rocket.y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, color: pColor, alpha: 1, size: Math.random() * 3 + 1, gravity: pGravity, decay: pDecay, friction: pFriction });
             }
         }
 
         function animate() {
             if (!isRunning && particles.length === 0 && rockets.length === 0) return;
-            
             ctx.fillStyle = 'rgba(0, 0, 0, 0.15)'; 
             ctx.globalCompositeOperation = 'destination-out';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.globalCompositeOperation = 'lighter';
-
             for (let i = rockets.length - 1; i >= 0; i--) {
-                const r = rockets[i];
-                r.x += r.vx; r.y += r.vy; r.vy += 0.1;
-                ctx.beginPath(); ctx.arc(r.x, r.y, 3, 0, Math.PI * 2);
-                ctx.fillStyle = r.color; ctx.fill();
+                const r = rockets[i]; r.x += r.vx; r.y += r.vy; r.vy += 0.1; ctx.beginPath(); ctx.arc(r.x, r.y, 3, 0, Math.PI * 2); ctx.fillStyle = r.color; ctx.fill();
                 if (r.vy >= 0 || r.y <= r.targetY) { explode(r); rockets.splice(i, 1); }
             }
-
             for (let i = particles.length - 1; i >= 0; i--) {
-                const p = particles[i];
-                p.vx *= p.friction; p.vy *= p.friction; p.vy += p.gravity;
-                p.x += p.vx; p.y += p.vy; p.alpha -= p.decay;
-                if (p.alpha <= 0) { particles.splice(i, 1); } 
-                else {
-                    ctx.globalAlpha = p.alpha; ctx.fillStyle = p.color;
-                    ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
-                }
+                const p = particles[i]; p.vx *= p.friction; p.vy *= p.friction; p.vy += p.gravity; p.x += p.vx; p.y += p.vy; p.alpha -= p.decay;
+                if (p.alpha <= 0) { particles.splice(i, 1); } else { ctx.globalAlpha = p.alpha; ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill(); }
             }
             requestAnimationFrame(animate);
         }
 
         // ==========================================
-        // 💾 数据中心 (Unit 3-6 内容完整版)
+        // 💾 数据中心 (Unit 3-7 完整版)
         // ==========================================
         const appData = {
             1: { title: "Unit 1", items: [] }, 
@@ -368,13 +342,24 @@
                     { title: "👂 6. Sounds 2", file: "4AU6 Sounds in focus 2.mp3", en: "E, e, Wednesday.\nE, e, Wednesday.", cn: "E, e, Wednesday (周三)。" },
                     { title: "📋 7. Wrap-up", file: "4AU6 Wrap-up time.mp3", en: "Good evening. Here is the weather report for next week.\nOn Monday, it is sunny all day.\nOn Tuesday, it is sunny in the morning and cloudy in the afternoon.\nOn Wednesday and Thursday, it is rainy. Take your umbrella with you.\nOn Friday and Saturday, it is windy and cloudy.\nOn Sunday, it is cloudy in the morning. Then it is rainy in the afternoon.\nHave a nice week.", cn: "晚上好。这是下周的天气预报。\n周一，整天晴朗。\n周二，上午晴朗，下午多云。\n周三和周四，有雨。请随身带伞。\n周五和周六，有风且多云。\n周日，上午多云。下午转雨。\n祝大家这周愉快。" }
                 ]
+            },
+            7: {
+                title: "Unit 7: Seasons 🌤️",
+                items: [
+                    { title: "🎶 1. Lead-in", file: "4AU7 Lead-in.mp3", en: "Spring, go boating. Summer, eat ice cream, go swimming.\nAutumn, go climbing. Winter, go skating.", cn: "春天，去划船。夏天，吃冰淇淋，去游泳。\n秋天，去爬山。冬天，去滑冰。" },
+                    { title: "🔤 2. Words", file: "4AU7 Words.mp3", en: "season, spring, go boating, winter, go skating, summer, ice cream, go swimming, autumn, go climbing.\nnew, cold, bird, back, in, year, plant, pick, snow.", cn: "季节, 春天, 去划船, 冬天, 去滑冰, 夏天, 冰淇淋, 去游泳, 秋天, 去爬山。\n新的, 冷的, 鸟, 回来, 在...里面, 年, 种植, 采摘, 雪。" },
+                    { title: "📖 3. Story Time", file: "4AU7 Story time.mp3", en: "We have four seasons in a year.\nIn spring, it is warm. We plant trees. We go boating. We like spring.\nIn summer, it is hot. We eat ice cream. We go swimming. We like summer.\nIn autumn, it is cool. We pick fruit. We go climbing. We like autumn.\nIn winter, it is cold. We play in the snow. We go skating. We like winter.", cn: "我们一年有四个季节。\n在春天，天气温暖。我们种树。我们去划船。我们喜欢春天。\n在夏天，天气炎热。我们吃冰淇淋。我们去游泳。我们喜欢夏天。\n在秋天，天气凉爽。我们摘水果。我们去爬山。我们喜欢秋天。\n在冬天，天气寒冷。我们在雪地里玩耍。我们去滑冰。我们喜欢冬天。", quizPool: [{q:"In spring, it is ______.", a:"warm"}, {q:"We eat ______ in summer.", a:"ice cream"}, {q:"It is ______ in winter.", a:"cold"}] },
+                    { title: "🐭 4. Cartoon Time", file: "4AU7 Cartoon time.mp3", en: "Bird: Nice to see you again.\nBobby: It is spring. It is warm.\nBird: Hello, Welcome to my home. We can play together.\nBobby: It is summer. It is hot.\nBird: Wow, You have babies. And I have new friends.\nBobby: It is autumn. It is cool. Where are my friends?\nBobby: It is winter. It is cold. Where can they be?\nBobby: It is spring again. The birds are back.\nBird: Nice to see you again.", cn: "鸟: 很高兴再次见到你。\nBobby: 春天到了。天气暖和。\n鸟: 你好，欢迎来到我家。我们可以一起玩。\nBobby: 夏天到了。天气很热。\n鸟: 哇，你有宝宝了。我也有了新朋友。\nBobby: 秋天到了。天气凉爽。我的朋友们在哪里？\nBobby: 冬天到了。天气很冷。他们会在哪里呢？\nBobby: 春天又来了。鸟儿们回来了。\n鸟: 很高兴再次见到你。", roleplay: true },
+                    { title: "👂 5. Sounds 1", file: "4AU7 Sounds in focus 1.mp3", en: "Look at these birds in the tree.\nIn spring, they sing to me.\nIn autumn, they leave me.\nWhere can they be? Where can they be?", cn: "看树上的这些鸟。\n在春天，它们对我歌唱。\n在秋天，它们离开我。\n它们会在哪里呢？它们会在哪里呢？" },
+                    { title: "👂 6. Sounds 2", file: "4AU7 Sounds in focus 2.mp3", en: "e, e, these.", cn: "e, e, these (这些)。" }
+                ]
             }
         };
 
         function loadUnit(unitId) {
             const data = appData[unitId];
             if (!data || data.items.length === 0) {
-                alert("🔒 哎呀：\nUnit " + unitId + " 还没有解锁哦！\n请先学习 Unit 3-6 吧~");
+                alert("🔒 哎呀：\nUnit " + unitId + " 还没有解锁哦！\n请先学习 Unit 3-7 吧~");
                 return;
             }
             document.getElementById('home-page').style.display = 'none';
@@ -396,15 +381,12 @@
             items.forEach((item, idx) => {
                 const sectionId = `section-${idx}`;
                 let html = `<div class="section"><h3>${item.title}</h3><audio controls src="${item.file}" preload="metadata"></audio><div class="btn-group"><button class="btn-func btn-trans" onclick="toggle('${sectionId}-trans')">📝 原文翻译</button>`;
-                // 修复：确保按钮正确显示
                 if (item.quizPool && item.quizPool.length > 0) html += `<button class="btn-func btn-quiz" onclick="renderQuiz('${sectionId}-quiz', ${unitId}, ${idx})">❓ 听力挑战</button>`;
                 if (item.roleplay) html += `<button class="btn-func btn-role" onclick="toggle('${sectionId}-role')">🗣️ 口语跟读</button>`;
                 html += `</div><div id="${sectionId}-trans" class="hidden-box text-content">${formatText(item.en, 'en')}<hr style="border:0; border-top:1px dashed #ddd; margin:10px 0;">${formatText(item.cn, 'cn')}</div>`;
-                
                 if (item.quizPool && item.quizPool.length > 0) {
                     html += `<div id="${sectionId}-quiz" class="hidden-box"><p style="color:#00b894; font-weight:bold; margin-top:0;">🎯 随机抽取 1 题：</p><div id="${sectionId}-quiz-content"></div><button class="btn-func btn-quiz" onclick="checkQuiz('${sectionId}-quiz')" style="margin-top:10px;">✅ 提交答案</button></div>`;
                 }
-                
                 if (item.roleplay) html += `<div id="${sectionId}-role" class="hidden-box" style="background:#dfe4ea;"><p><strong>请模仿角色:</strong></p><p class="en-line">"Hello!"</p></div>`;
                 html += `</div>`;
                 container.innerHTML += html;
@@ -417,7 +399,6 @@
         function renderQuiz(cid, uid, idx) {
              const div = document.getElementById(cid + '-content');
              const pool = appData[uid].items[idx].quizPool;
-             // 随机抽取
              const q = pool[Math.floor(Math.random() * pool.length)];
              div.innerHTML = `<p>${q.q}</p><input type="text" class="quiz-input" data-ans="${q.a}">`;
              document.getElementById(cid).style.display = 'block';

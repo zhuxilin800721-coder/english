@@ -404,6 +404,10 @@
             }
         };
 
+        // 🚀 核心加速代码：使用 jsDelivr CDN 加速 GitHub 文件
+        // 如果你的 GitHub 分支名是 master，请把下面的 main 改成 master
+        const cdnPrefix = "https://cdn.jsdelivr.net/gh/zhuxilin800721-coder/english@main/";
+
         function loadUnit(unitId) {
             const data = appData[unitId];
             if (!data || data.items.length === 0) {
@@ -428,7 +432,12 @@
             container.innerHTML = "";
             items.forEach((item, idx) => {
                 const sectionId = `section-${idx}`;
-                let html = `<div class="section"><h3>${item.title}</h3><audio controls src="${item.file}" preload="metadata"></audio><div class="btn-group"><button class="btn-func btn-trans" onclick="toggle('${sectionId}-trans')">📝 原文翻译</button>`;
+                
+                // 🚀 加速修改：拼接 CDN 前缀，并处理中文文件名
+                const finalUrl = cdnPrefix + encodeURIComponent(item.file);
+
+                let html = `<div class="section"><h3>${item.title}</h3><audio controls src="${finalUrl}" preload="none"></audio><div class="btn-group"><button class="btn-func btn-trans" onclick="toggle('${sectionId}-trans')">📝 原文翻译</button>`;
+                
                 if (item.quizPool && item.quizPool.length > 0) html += `<button class="btn-func btn-quiz" onclick="renderQuiz('${sectionId}-quiz', ${unitId}, ${idx})">❓ 听力挑战</button>`;
                 if (item.roleplay) html += `<button class="btn-func btn-role" onclick="toggle('${sectionId}-role')">🗣️ 口语跟读</button>`;
                 html += `</div><div id="${sectionId}-trans" class="hidden-box text-content">${formatText(item.en, 'en')}<hr style="border:0; border-top:1px dashed #ddd; margin:10px 0;">${formatText(item.cn, 'cn')}</div>`;

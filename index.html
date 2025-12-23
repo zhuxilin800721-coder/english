@@ -66,7 +66,8 @@
         .u4 { background: linear-gradient(135deg, #f12711, #f5af19); } /* 橙 */
         .u5 { background: linear-gradient(135deg, #834d9b, #d04ed6); } /* 紫 */
         .u6 { background: linear-gradient(135deg, #2980b9, #6dd5fa); } /* 蓝 */
-        .u7 { background: linear-gradient(135deg, #ff9a9e, #fecfef); } /* 粉(夏奇羊) */
+        .u7 { background: linear-gradient(135deg, #ff9a9e, #fecfef); } /* 粉 */
+        .u8 { background: linear-gradient(135deg, #ff416c, #ff4b2b); } /* 红(春节) */
 
         .menu-btn h2 { margin: 0; font-size: 2.2em; font-weight: 800; text-shadow: 1px 1px 3px rgba(0,0,0,0.2); z-index: 3; }
         .menu-btn span { font-size: 1em; font-weight: 700; margin-top: 5px; z-index: 3; text-transform: uppercase; }
@@ -158,6 +159,10 @@
 
             <button class="menu-btn active u7" onclick="loadUnit(7)" data-pet-left="🦌" data-pet-right="🐆">
                 <h2>7</h2><span>Seasons</span>
+            </button>
+            
+            <button class="menu-btn active u8" onclick="loadUnit(8)" data-pet-left="🐲" data-pet-right="🧧">
+                <h2>8</h2><span>New Year</span>
             </button>
         </div>
     </div>
@@ -290,7 +295,7 @@
         }
 
         // ==========================================
-        // 💾 数据中心 (Unit 3-7 完整版)
+        // 💾 数据中心 (Unit 3-8 完整版)
         // ==========================================
         const appData = {
             1: { title: "Unit 1", items: [] }, 
@@ -353,13 +358,56 @@
                     { title: "👂 5. Sounds 1", file: "4AU7 Sounds in focus 1.mp3", en: "Look at these birds in the tree.\nIn spring, they sing to me.\nIn autumn, they leave me.\nWhere can they be? Where can they be?", cn: "看树上的这些鸟。\n在春天，它们对我歌唱。\n在秋天，它们离开我。\n它们会在哪里呢？它们会在哪里呢？" },
                     { title: "👂 6. Sounds 2", file: "4AU7 Sounds in focus 2.mp3", en: "e, e, these.", cn: "e, e, these (这些)。" }
                 ]
+            },
+            8: {
+                title: "Unit 8: Chinese New Year 🧨",
+                items: [
+                    { 
+                        title: "🔤 1. Words", 
+                        file: "4A U8 Lead-in 改.mp3", 
+                        en: "cap, coat, skirt, trousers, dress, shirt.\nGet ready.\nListen to the rhyme.", 
+                        cn: "鸭舌帽，外套，短裙，裤子，连衣裙，衬衫。\n准备好。\n听这首韵律诗。" 
+                    },
+                    { 
+                        title: "📖 2. Story Time", 
+                        file: "4AU8 Story time.mp3", 
+                        en: "Mike: Happy Chinese New Year!\nSu Hai: Happy Chinese New Year! Thank you, Mike.\nMike: Your red dress is beautiful.\nSu Hai: Thanks. We like wearing red clothes at Chinese New Year.\nSu Hai: Look, this is my father's new shirt. And this is my mother's coat.\nMike: How nice! Whose skirt is this? Guess.\nMike: Is it Su Yang's?\nSu Hai: Yes, you're right.\nMike: Whose caps are those? They're so cute.\nSu Hai: They're Kitties. (Hello Kitty caps)", 
+                        cn: "Mike: 新年快乐！\n苏海: 新年快乐！谢谢你，Mike。\nMike: 你的红连衣裙真漂亮。\n苏海: 谢谢。我们喜欢在春节穿红色的衣服。\n苏海: 看，这是我爸爸的新衬衫。这是我妈妈的外套。\nMike: 真好看！这是谁的短裙？猜猜看。\nMike: 是苏阳的吗？\n苏海: 是的，你猜对了。\nMike: 那些是谁的帽子？真可爱。\n苏海: 它们是Kitty猫的帽子。",
+                        quizPool: [{q:"Su Hai's dress is ______.", a:"red"}, {q:"They like wearing ______ clothes.", a:"red"}, {q:"The ______ are cute.", a:"caps"}]
+                    },
+                    { 
+                        title: "🎶 3. Rhyme", 
+                        file: "4AU8 Words.mp3", 
+                        en: "We love to dress up on the holiday,\nto celebrate in our own special way.\nSome wear new dresses or bright skirts.\nSome wear cool trousers or nice shirts.", 
+                        cn: "我们喜欢在节日里盛装打扮，\n用我们独特的方式庆祝。\n有的人穿新裙子或鲜艳的短裙。\n有的人穿酷酷的裤子或好看的衬衫。" 
+                    },
+                    { 
+                        title: "🎶 4. Chant", 
+                        file: "4AU8 Sounds in focus 2.mp3", 
+                        en: "Yellow hat, pink shirt.\nBlue dress, red skirt.\nSo many clothes, so many colors.\nTogether, let's put on a play on New Year's Day!", 
+                        cn: "黄帽子，粉衬衫。\n蓝裙子，红短裙。\n这么多衣服，这么多颜色。\n一起来，我们在新年演个剧！" 
+                    },
+                    { 
+                        title: "👂 5. Sounds", 
+                        file: "4AU8 Sounds in focus 1.mp3", 
+                        en: "Because my students are very bright.", 
+                        cn: "因为我的学生们非常聪明（bright）。" 
+                    },
+                    { 
+                        title: "📋 6. Wrap-up", 
+                        file: "4A U8 Wrap-up time改.mp3", 
+                        en: "Liu Jiajia and Mike are talking about the students' clothes for the New Year's party.\n\nMike: This pink skirt is nice. Whose skirt is it?\nLiu Jiajia: It's Young Ling's.\nMike: That shirt is cool. Is it Wang Bing's?\nLiu Jiajia: Yes, it is.\nMike: Whose trousers are those?\nLiu Jiajia: They're Liu Tao's.\nMike: Whose dress is it? It's beautiful.\nLiu Jiajia: It's Su Hai's.", 
+                        cn: "刘佳佳和Mike正在谈论新年派对上学生们的衣服。\n\nMike: 这条粉色短裙真好看。它是谁的？\n刘佳佳: 它是杨玲的。\nMike: 那件衬衫很酷。是王兵的吗？\n刘佳佳: 是的。\nMike: 那些是谁的裤子？\n刘佳佳: 它们是刘涛的。\nMike: 它是谁的连衣裙？真漂亮。\n刘佳佳: 它是苏海的。",
+                        quizPool: [{q:"The pink skirt is ______.", a:"nice"}, {q:"The shirt is ______'s.", a:"Wang Bing"}]
+                    }
+                ]
             }
         };
 
         function loadUnit(unitId) {
             const data = appData[unitId];
             if (!data || data.items.length === 0) {
-                alert("🔒 哎呀：\nUnit " + unitId + " 还没有解锁哦！\n请先学习 Unit 3-7 吧~");
+                alert("🔒 哎呀：\nUnit " + unitId + " 还没有解锁哦！\n请先学习 Unit 3-8 吧~");
                 return;
             }
             document.getElementById('home-page').style.display = 'none';
